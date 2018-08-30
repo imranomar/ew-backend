@@ -55,73 +55,6 @@ public static function allowedDomains()
     ];
 }
 
-/**
- * @inheritdoc
- */
-//public function behaviors()
-//{
-    // $behaviors = parent::behaviors();
-
-    // // remove authentication filter
-    // $auth = $behaviors['authenticator'];
-    // unset($behaviors['authenticator']);
-
-    // // add CORS filter
-    // $behaviors['corsFilter'] = [
-    //     'class' => \yii\filters\Cors::className(),
-    // ];
-
-    // // re-add authentication filter
-    // $behaviors['authenticator'] = $auth;
-    // // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-    // $behaviors['authenticator']['except'] = ['options'];
-
-    // return $behaviors;
-//}
-// public function behaviors()
-// {
-//     return \yii\helpers\ArrayHelper::merge(
-//         [
-//             'cors' => [
-//                 'class' => \yii\filters\Cors::className(),
-//             ],
-//         ],
-//         parent::behaviors(),
-//         [
-//             'access' => [
-//                 'class' => AccessControl::className(),
-//                 'rules' => [
-//                      ['allow' => true, 'actions' => ['options']],
-//                 ]
-//             ],
-//         ]
-//         );
-// }
-
-// public function behaviors()
-// {
-//     return [
-//         'corsFilter' => [
-//             'class' => \yii\filters\Cors::className(),
-//             'cors' => [
-//                 // restrict access to
-//                 'Origin' => ['*'],
-//                 // Allow only POST and PUT methods
-//                 'Access-Control-Request-Method' => ['POST', 'PUT', 'OPTIONS'],
-//                 // Allow only headers 'X-Wsse'
-//                 'Access-Control-Request-Headers' => ['X-Wsse'],
-//                 // Allow credentials (cookies, authorization headers, etc.) to be exposed to the browser
-//                 'Access-Control-Allow-Credentials' => true,
-//                 // Allow OPTIONS caching
-//                 'Access-Control-Max-Age' => 3600,
-//                 // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-//                 'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
-//             ],
-
-//         ],
-//     ];
-// }
-
 protected function verbs()
 {
     return [
@@ -134,10 +67,10 @@ protected function verbs()
 }
 
 
-    public function actionSendnotification($api_tokens,$message)
-    {
-       
-    }
+public function actionSendnotification($api_tokens,$message)
+{
+    
+}
 
 
 }

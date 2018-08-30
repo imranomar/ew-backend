@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\SlotsPricingSearch */
+/* @var $searchModel app\models\OrdersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Vault';
+$this->title = 'Orders';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vault-index">
+<div class="orders-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Vault', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Orders', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -26,12 +26,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'customer_id',
-            'number',
-            'transact',
-            'payment_type',
-            'expiry_date',
-            'expiry_month',
-            'expiry_year',
+            'payment_id',
+            'status',
+            'pickup_date',
+            'pickup_at_door',
+            'pickup_time_from',
+            'pickup_time_to',
+            'pickup_type',
+            'pickup_price',
+            'drop_date',
+            'drop_at_door',
+            'drop_time_from',
+            'drop_time_to',
+            'drop_type',
+            'drop_price',
+            'address_id',
+            'same_day_pickup',
+            'next_day_drop',
+            'comments',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

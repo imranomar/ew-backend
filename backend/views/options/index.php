@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\SlotsPricingSearch */
+/* @var $searchModel app\models\OptionsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Vault';
+$this->title = 'Options';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vault-index">
+<div class="options-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Vault', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Options', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,13 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'customer_id',
-            'number',
-            'transact',
-            'payment_type',
-            'expiry_date',
-            'expiry_month',
-            'expiry_year',
+            'holidays',
+            'weekend',
+            'same_day_pickup_price',
+            'next_day_delivery_price',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
