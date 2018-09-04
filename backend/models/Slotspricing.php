@@ -54,6 +54,6 @@ class SlotsPricing extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new SlotsPricingQuery(get_called_class());
+        return new SlotspricingQuery(get_called_class());
     }
 }

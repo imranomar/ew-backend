@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use app\models\SlotsPricing;
-use app\models\SlotsPricingSearch;
+use app\models\Slotspricing;
+use app\models\SlotspricingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
