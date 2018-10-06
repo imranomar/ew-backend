@@ -89,4 +89,34 @@ class Orders extends \yii\db\ActiveRecord
     {
         return new OrdersQuery(get_called_class());
     }
+
+    public function extraFields() 
+    {
+        return [
+            'address'=>function($model){
+                return $model->address;
+            },
+            'customer'=>function($model){
+                return $model->customer;
+            },
+            'vault'=>function($model){
+                return $model->vault;
+            },
+        ];
+    }
+
+    public function getCustomer()
+    {
+        return $this->hasOne(Customers::className(), ['id' => 'customer_id']);
+    }
+
+    public function getAddress()
+    {
+        return $this->hasOne(Addresses::className(), ['id' => 'address_id']);
+    }
+
+    public function getVault()
+    {
+        return $this->hasOne(Vault::className(), ['id' => 'payment_id']);
+    }
 }
