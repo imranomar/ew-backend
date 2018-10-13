@@ -34,6 +34,20 @@ class Tasks extends \yii\db\ActiveRecord
         ];
     }
 
+    public function extraFields() 
+    {
+        return [
+
+            'order'=>function($model){
+                return $model->order;
+            },
+            'vault'=>function($model){
+                return $model->vault;
+            },
+
+        ];
+    }
+
     /**
      * @inheritdoc
      */
@@ -54,5 +68,10 @@ class Tasks extends \yii\db\ActiveRecord
     public static function find()
     {
         return new TasksQuery(get_called_class());
+    }
+
+    public function getOrder()
+    {
+        return $this->hasOne(Orders::className(), ['id' => 'order_id']);
     }
 }

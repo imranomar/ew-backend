@@ -102,6 +102,9 @@ class Orders extends \yii\db\ActiveRecord
             'vault'=>function($model){
                 return $model->vault;
             },
+            'tasks'=>function($model){
+                return $model->tasks;
+            },
         ];
     }
 
@@ -118,5 +121,10 @@ class Orders extends \yii\db\ActiveRecord
     public function getVault()
     {
         return $this->hasOne(Vault::className(), ['id' => 'payment_id']);
+    }
+
+    public function getTasks()
+    {
+        return $this->hasMany(Tasks::className(), ['order_id' => 'id']);
     }
 }
