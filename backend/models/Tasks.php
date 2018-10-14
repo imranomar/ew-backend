@@ -28,9 +28,9 @@ class Tasks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id', 'type', 'at'], 'required'],
+            [['order_id', 'type', 'at', 'assigned_to'], 'required'],
             [['order_id', 'type'], 'integer'],
-            [['at'], 'safe'],
+            [['at'], 'safe']
         ];
     }
 
@@ -58,6 +58,7 @@ class Tasks extends \yii\db\ActiveRecord
             'order_id' => 'Order ID',
             'type' => 'Type',
             'at' => 'At',
+            'assigned_to' => 'Assigned To'
         ];
     }
 
