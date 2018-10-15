@@ -44,7 +44,12 @@ class Tasks extends \yii\db\ActiveRecord
             'vault'=>function($model){
                 return $model->vault;
             },
-
+			'address'=>function($model){
+                return $this->getAddress($model->order->address_id);
+            },
+            'customer'=>function($model){
+                return $this->getCustomer($model->order->customer_id);
+            }
         ];
     }
 
@@ -73,5 +78,19 @@ class Tasks extends \yii\db\ActiveRecord
     public function getOrder()
     {
         return $this->hasOne(Orders::className(), ['id' => 'order_id']);
+    }
+	
+    public function getAddress($id)
+    {
+		$address= Addresses::find()->where (['id'=>$id])->one();
+        return $address;
+		}
+	
+	public function getCustomer($id){
+
+    	$customer = Customers::find()->where(['id' => $id])->one();
+
+    	return $customer;
+
     }
 }
