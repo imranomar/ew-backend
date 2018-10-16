@@ -1,19 +1,62 @@
 <?php
-
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Tasks';
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\widgets\Pjax;
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\TaskSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="tasks-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?php //echo Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success'])?>
+    </p>
+<?php Pjax::begin(); ?>    
+<?=GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            [
+                'attribute' => 'order_id',
+                'value' => 'orders.id'
+            ],
+            'type',
+            'at',
+            'assigned_to',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+<?php Pjax::end(); ?>
+</div>
+
+
 <div class="site-index">
 
+<div class="col-sm-12">
     <div class="jumbotron">
         <h1>Congratulations!</h1>
 
         <p class="lead">You have successfully created your Yii-powered application.</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p><a class="btn btn-lg btn-success" href="#">Get started with Yii</a></p>
     </div>
+</div>
 
+
+<div class="col-sm-12">
     <div class="body-content">
 
         <div class="row">
@@ -50,4 +93,5 @@ $this->title = 'My Yii Application';
         </div>
 
     </div>
+</div>
 </div>

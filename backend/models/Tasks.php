@@ -30,7 +30,7 @@ class Tasks extends \yii\db\ActiveRecord
         return [
             [['order_id', 'type', 'at', 'assigned_to'], 'required'],
             [['order_id', 'type'], 'integer'],
-            [['at'], 'safe']
+            [['at'], 'safe']    
         ];
     }
 

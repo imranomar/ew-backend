@@ -13,6 +13,9 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+use frontend\models\Tasks;
+use frontend\models\TaskSearch;
+
 /**
  * Site controller
  */
@@ -70,9 +73,30 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
-    {
-        return $this->render('index');
+    public function actionIndex() {
+        $model = new TaskSearch();
+        $provider = Yii::$app->request->queryParams;
+        
+        return $this->render('index', [
+            'searchModel' => $model,
+            'dataProvider' => $model->search($provider)
+        ]);              
+    }
+
+    /**
+     * Displays single task.
+     *
+     * @return mixed
+     */
+    public function actionView($id) {
+        $model = Tasks::findOne($id);
+        if ($model === null) {
+            throw new NotFoundHttpException;
+        }
+        
+        return $this->render('view', [
+            'model' => $model
+        ]);             
     }
 
     /**
@@ -139,6 +163,17 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+
+     /**
+     * Displays about page.
+     *
+     * @return mixed
+     */
+    public function actionTasks()
+    {
+        
     }
 
     /**
