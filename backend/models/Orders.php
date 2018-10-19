@@ -105,6 +105,9 @@ class Orders extends \yii\db\ActiveRecord
             'tasks'=>function($model){
                 return $model->tasks;
             },
+            'items'=>function($model){
+                return $model->items;
+            },
         ];
     }
 
@@ -126,5 +129,10 @@ class Orders extends \yii\db\ActiveRecord
     public function getTasks()
     {
         return $this->hasMany(Tasks::className(), ['order_id' => 'id']);
+    }
+
+    public function getItems()
+    {
+        return $this->hasMany(Orderitems::className(), ['order_id' => 'id']);
     }
 }
