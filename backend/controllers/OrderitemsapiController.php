@@ -11,6 +11,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
 use yii\filters\auth\HttpBasicAuth; // to enable cors
+use yii\web\Response;
+
 
 class OrderitemsapiController extends ActiveController
 {
@@ -20,6 +22,41 @@ class OrderitemsapiController extends ActiveController
     public function actionTest()
     {
         echo 123;
+    }
+
+    /**
+     * Creates a new Orders model.
+     * If creation is successful, the browser will be redirected to the 'create' page.
+     * @return mixed
+     */
+    public function actionCreatemultiple()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $orderitems = Yii::$app->request->post();
+        
+        $count = count($orderitems);
+
+        if($count == 0) 
+        {
+            $data = array("Success"=> false, "Message" => "No order items found.");
+            return $data;
+        }
+
+
+        foreach ($orderitems as $orderitem) {
+           // echo '<pre>';print_r($orderitem);die;   
+            $item = new Orderitems();
+            $item->order_id = $orderitem["order_id"];
+            $item->title = $orderitem["title"];
+            $item->type = $orderitem["type"];
+            $item->price = $orderitem["price"];
+            //echo '<pre>';print_r($item);die;
+            //Try to save the models. Validation is not needed as it's already been done.
+            $status = $item->save();
+        }
+
+        $data = array("Success"=> true, "Message" => "Order Items inserted successfully");
+        return $data;
     }
 
    

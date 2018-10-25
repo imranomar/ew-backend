@@ -121,4 +121,22 @@ class OrderController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionPaymentcallback() 
+    {
+        if(!empty($_GET))
+        {
+            if(isset($_GET["reason"]) && $_GET["reason"] > 0) {
+                // Error
+
+                return $this->render('payment_error');
+            } else {
+                $model = $this->findModel($_GET["orderid"]);
+                $model->status = 2;
+                $model->save();
+
+                return $this->render('payment_success');
+            }
+        }
+    }
 }
