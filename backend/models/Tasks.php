@@ -28,8 +28,8 @@ class Tasks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id', 'type', 'at'], 'required'],
-            [['order_id', 'type'], 'integer'],
+            [['order_id', 'type', 'at', 'status'], 'required'],
+            [['order_id', 'type', 'status'], 'integer'],
             [['at'], 'safe'],
         ];
     }
@@ -42,7 +42,10 @@ class Tasks extends \yii\db\ActiveRecord
                 return $model->order;
             },
             'vault'=>function($model){
-                return $model->vault;
+                return $this->getVault($model->order->payment_id);
+            },
+            'payment'=>function($model){
+                return $this->getPayment($model->order->payment_id);
             },
 			'address'=>function($model){
                 return $this->getAddress($model->order->address_id);
@@ -72,7 +75,8 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new TasksQuery(get_called_class());
+        //return new TasksQuery(get_called_class());
+        return parent::find()->where(['status' => 0]);
     }
 
     public function getOrder()
@@ -92,5 +96,15 @@ class Tasks extends \yii\db\ActiveRecord
 
     	return $customer;
 
+    }
+
+    public function getVault($id){
+    	$vault = Vault::find()->where(['id' => $id])->one();
+    	return $vault;
+    }
+
+    public function getPayment($id){
+    	$Payment = Payments::find()->where(['id' => $id])->one();
+    	return $Payment;
     }
 }

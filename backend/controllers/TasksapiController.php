@@ -22,7 +22,6 @@ class TasksapiController extends ActiveController
         echo 123;
     }
 
-
     /**
  * List of allowed domains.
  * Note: Restriction works only for AJAX (using CORS, is not secure).

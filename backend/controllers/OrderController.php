@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use app\models\Orders;
 use app\models\OrdersSearch;
+use app\models\Tasks;
+use app\models\Payments;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -131,10 +133,23 @@ class OrderController extends Controller
 
                 return $this->render('payment_error');
             } else {
+                //echo '<pre>';print_r($_GET);die;
                 $model = $this->findModel($_GET["orderid"]);
-                $model->status = 2;
-                $model->save();
 
+                $payment = new Payments();
+                $payment->customer_id = $model->customer_id;
+                $payment->vault_id = $model->payment_id;
+                $payment->save();
+
+                $task = Tasks::find()->Where(array("order_id" => $model->id, "type" => 2))->one();
+                $task->status = 1;
+                $task->save();
+
+                
+                $model->status = 2;
+                $model->payment_id = $payment->id;
+                $model->save();
+                
                 return $this->render('payment_success');
             }
         }

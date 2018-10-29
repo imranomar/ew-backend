@@ -49,6 +49,7 @@ class OrderitemsapiController extends ActiveController
             $item->order_id = $orderitem["order_id"];
             $item->title = $orderitem["title"];
             $item->type = $orderitem["type"];
+            $item->quantity = $orderitem["quantity"];
             $item->price = $orderitem["price"];
             //echo '<pre>';print_r($item);die;
             //Try to save the models. Validation is not needed as it's already been done.

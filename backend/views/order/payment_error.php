@@ -34,6 +34,7 @@ use yii\helpers\Html;
 <script>
 function closeModal()
 {
-    $("#CloseDropTaskModal .modal-close", parent.document).trigger("click");
+    //$("#CloseDropTaskModal .modal-close", parent.document).trigger("click");
+    parent.document.location.reload();
 }
 </script>
