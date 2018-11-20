@@ -8,6 +8,7 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 use Yii;
 use app\models\Customers;
 use app\models\CustomerSearch;
+use app\models\CustomerDevices;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -31,7 +32,19 @@ class CustomersapiController extends ActiveController
 
         if($customer)
         {
-            echo $customer->id;
+            $customer_id = $customer->id;
+
+            if(isset($_POST['device_id']) && !empty($_POST['device_id'])) {
+                $device_id = $_POST['device_id'];
+                if(!CustomerDevices::find()->where(['customer_id' => $customer_id, 'device_id'=> TRIM($device_id)])->exists()) {
+                    $device = new CustomerDevices();
+                    $device->customer_id = $customer_id;
+                    $device->device_id = $device_id;
+                    $device->save();
+                }
+            }
+
+            echo $customer_id;
         }
         else
         {
