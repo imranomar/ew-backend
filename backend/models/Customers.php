@@ -70,6 +70,7 @@ class Customers extends \yii\db\ActiveRecord
         return $this->hasMany(Addresses::className(), ['customer_id' => 'id']);
     }
 
+
     public function extraFields() 
     {
         return [
@@ -85,6 +86,9 @@ class Customers extends \yii\db\ActiveRecord
             'vault'=>function($model){
                 return $model->vault;
             },
+            'customerDevices'=>function($model) {
+                return $model->customerDevices;
+            }
         ];
     }
 
@@ -101,6 +105,11 @@ class Customers extends \yii\db\ActiveRecord
     public function getVault()
     {
         return $this->hasMany(Vault::className(), ['customer_id' => 'id']);
+    }
+    
+    public function getCustomerDevices()
+    {
+        return $this->hasMany(CustomerDevices::className(), ['customer_id' => 'id']);
     }
 
 }

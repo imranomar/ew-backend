@@ -58,4 +58,9 @@ class CustomerDevices extends \yii\db\ActiveRecord
     {
         return new CustomerDevicesQuery(get_called_class());
     }
+
+    public function getCustomer()
+    {
+        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+    }
 }
