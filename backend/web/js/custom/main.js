@@ -1,4 +1,4 @@
-var _webAPIURL = "http://localhost/advanced/backend/web/";
+var _webAPIURL = "/advanced/backend/web/";
 
 function postJSON(JSONString, ApiUrl, AjaxType, SuccessCallBack, ErrorCallBack, AsyncRequest) {
     $.ajax({

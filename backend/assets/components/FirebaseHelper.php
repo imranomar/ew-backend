@@ -8,6 +8,7 @@ class FirebaseHelper {
     
     // function makes curl request to firebase servers
     public static function sendPushNotification($divice_array, $notification) {
+        $response = array("Success" => false, "Message" => "Error while sending fcm notifications");
         
         // Set POST variables
         $url = 'https://fcm.googleapis.com/fcm/send';
@@ -53,16 +54,21 @@ class FirebaseHelper {
 
             // Execute post
             $result = curl_exec($ch);
-            // echo "Result".$result;
+           
             if ($result === FALSE) {
-                die('Curl failed: ' . curl_error($ch));
+                $response = array("Success" => false, "Message" =>curl_error($ch));
+                return $response;
             }
+            $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+            if($httpcode == 200) {
+                $response = array("Success" => true, "Message" => "FCM notifications sent successfully.");
+            }
+            
             // Close connection
             curl_close($ch);
         }
-
-        return $result;
+        return $response;
     }
  }
 

@@ -36,8 +36,12 @@ class Customers extends \yii\db\ActiveRecord
             [['full_name', 'password', 'phone'], 'string', 'max' => 50],
             [['email'], 'unique',
                 'targetAttribute' => ['email'], 
-                'filter' => ['!=', 'id', Yii::$app->request->get('id')], 
-                'message' => 'This email is already exists.'
+                'targetClass' => Customers::className(),
+                'filter' => function ($query) {
+                    if (Yii::$app->request->get('id') > 0) {
+                        $query->andWhere(['not', ['id'=>Yii::$app->request->get('id')]]);
+                    }
+                }
             ],
             [['email'], 'string', 'max' => 100],
             [['token'], 'string', 'max' => 1000],

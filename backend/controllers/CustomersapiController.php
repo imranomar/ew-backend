@@ -61,7 +61,7 @@ class CustomersapiController extends ActiveController
         
         $listOfCustomers = Customers::find()
             ->innerJoinWith('customerDevices', false)
-            ->select('customers.id, customers.full_name')
+            ->select('customers.id, customers.full_name, customers.email')
             ->orderBy(['customers.full_name' => 'ASC'])
             ->all();
 
@@ -287,8 +287,7 @@ class CustomersapiController extends ActiveController
 
             $result = array();
             $result = FirebaseHelper::sendPushNotification($device_ids, $notification_data);
-
-            $data = array("Success"=> true, "Message" => "Notfication sent successfully");
+            return $result;
         }
 
         return $data;

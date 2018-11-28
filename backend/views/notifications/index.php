@@ -43,12 +43,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <script>
     $(document).ready(function() {
+        $("#sentTo, #listOfUsers").select2({width: '100%' });
         postJSON({}, _webAPIURL + 'customersapi/customerswithdevices', "Post", fillCustomerDropdownHandler, ErrorCallBack, true);
     });
 
     
     function fillCustomerDropdownHandler(jsonObj) {
-        fillDropDown(jsonObj.Data, "listOfUsers", "id", "full_name");
+        var listItems = "";
+        var jsonData = jsonObj.Data
+        for (var i = 0; i < jsonData.length; i++) {
+            listItems += "<option value='" + jsonData[i].id + "'>" + jsonData[i].full_name + " (" + jsonData[i].email + ")"+ "</option>";
+        }
+        $("#listOfUsers").html(listItems);
     }
 
     function sendNotifications() {
@@ -84,6 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
         if(response.Success == true) {
             showClientSideMessage('success', response.Message);
             $("#fcmNotificationForm")[0].reset();
+            $('#listOfUsers').select2('val', '');
             $('#sentTo').change();
         } else {
             showClientSideMessage('error', response.Message);
