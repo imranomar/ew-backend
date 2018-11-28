@@ -34,10 +34,22 @@ class Customers extends \yii\db\ActiveRecord
         return [
             [['facebook_id', 'sex'], 'integer'],
             [['full_name', 'password', 'phone'], 'string', 'max' => 50],
+            [['email'], 'unique',
+                'targetAttribute' => ['email'], 
+                'filter' => ['!=', 'id', Yii::$app->request->get('id')], 
+                'message' => 'This email is already exists.'
+            ],
             [['email'], 'string', 'max' => 100],
-            [['api_token'], 'string', 'max' => 1000],
+            [['token'], 'string', 'max' => 1000],
         ];
     }
+
+    public static function getOldEmail($id)
+    {
+        
+        return Customers::findOne($id)->email;
+    }
+
 
     /**
      * @inheritdoc
@@ -52,7 +64,7 @@ class Customers extends \yii\db\ActiveRecord
             'password' => 'Password',
             'phone' => 'Phone',
             'sex' => 'Sex',
-            'api_token' => 'token for notification',
+            'token' => 'token for reset',
         ];
     }
 

@@ -99,6 +99,148 @@ class CustomersapiController extends ActiveController
         ];
     }
 
+    public function actionForgotpassword()
+	{
+        $response = array("Success"=> false, "Message" => "Invalid request.");
+
+        $data = Yii::$app->request->post();
+        if (Yii::$app->request->isPost && isset($data['email']) && !empty($data['email'])) {
+            $getEmail = $data['email'];
+            $getModel = Customers::find()->where(['email'=>$getEmail])->one();
+            
+            if($getModel)
+            {
+                $getToken = rand(0, 99999);
+                $getTime = date("H:i:s");
+                $getModel->token = md5($getToken.$getTime);
+                $getModel->save();
+
+
+                // Send Email
+                $namaPengirim="Owner Jsource Indonesia";
+                $emailadmin="fahmi.j@programmer.net";
+
+                $subject="Reset Password";
+
+                $mail_content="You have successfully reset your password<br/>
+                    <a href='". Url::base(true).'/auth/reset?token='.$getModel->token."'>Click Here to Reset Password</a>";
+
+                Yii::$app->mailer->compose()
+                ->setFrom([Yii::$app->params['supportEmail'] => 'Eazywash'])
+                ->setTo($getEmail)
+                ->setSubject($subject)
+                ->setHtmlBody($mail_content)
+                ->send();
+
+                $response = array("Success"=> true, "Message" => "Reset password link is sent to email.");
+            } else {
+                $response = array("Success"=> false, "Message" => "No details found");
+            } 
+
+        }
+        return $response;
+    }
+
+
+    public function actionChangepassword($customer_id)
+	{
+        $response = array("Success"=> false, "Message" => "Invalid request.");
+
+        $data = Yii::$app->request->post();
+        
+        if (!Yii::$app->request->isPost) {
+            return $response;
+        }
+
+        if(!isset($data['old_password']) || empty($data['old_password'])) {
+            $response = array("Success"=> false, "Message" => "Please enter old passowrd.");
+            return $response;
+        }
+
+        $old_password = $data['old_password'];
+
+        if(!isset($data['new_password']) || empty($data['new_password'])) {
+            $response = array("Success"=> false, "Message" => "Please enter new passowrd.");
+            return $response;
+        }
+
+        $new_password = $data['new_password'];
+
+        if(!isset($data['cpassword']) || empty($data['cpassword'])) {
+            $response = array("Success"=> false, "Message" => "Please enter confirm passowrd.");
+            return $response;
+        }
+
+        if($data['new_password'] != $data['cpassword']) {
+            $response = array("Success"=> false, "Message" => "Password and confirm password does not match.");
+            return $response;
+        }
+
+        $model = $this->findModel($customer_id);
+        
+        
+        if($model->password != $old_password) {
+            $response = array("Success"=> false, "Message" => "Entered old password is incorrect.");
+            return $response;
+        }
+
+        if($model->password == $new_password) {
+            $response = array("Success"=> false, "Message" => "New password is same as old passoword.");
+            return $response;
+        }
+        
+        $model->password = $new_password;
+        $model->save();
+       
+        $response = array("Success"=> true, "Message" => "Password changed successfully");
+        return $response;
+    }
+
+    public function actionResetpassword()
+	{
+        $response = array("Success"=> false, "Message" => "Invalid request.");
+
+        $data = Yii::$app->request->post();
+        
+        if (!Yii::$app->request->isPost || (!isset($data['token']) || empty($data['token']))) {
+            return $response;
+        }
+
+
+        if(!isset($data['password']) || empty($data['password'])) {
+            $response = array("Success"=> false, "Message" => "Please enter passowrd.");
+            return $response;
+        }
+
+        if(!isset($data['cpassword']) || empty($data['cpassword'])) {
+            $response = array("Success"=> false, "Message" => "Please enter confirm passowrd.");
+            return $response;
+        }
+
+        if($data['password'] != $data['cpassword']) {
+            $response = array("Success"=> false, "Message" => "Password and confirm password does not match.");
+            return $response;
+        }
+
+        $token = $data['token'];
+        $password = $data['password'];
+
+        $model = Customers::find()->where(['token'=>$token])->one();
+
+        if($model === null) {
+            $response = array("Success"=> false, "Message" => "Token is invalid");
+            return $response;
+        }
+
+        $model->token=null;
+        $model->password=$password;
+        $model->save();
+       
+        $response = array("Success"=> true, "Message" => "Password reset successfully");
+        return $response;
+    }
+
+   
 
     public function actionSendnotification()
     {
@@ -155,5 +297,14 @@ class CustomersapiController extends ActiveController
         return $data;
     }
 
+
+    protected function findModel($id)
+    {
+        if (($model = Customers::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 
 }

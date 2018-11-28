@@ -9,7 +9,7 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'NBb9POuU5S7ZAyWihxAkRMLrJ_a2Y39U',
         ],
-    ],
+    ]
 ];
 
 if (!YII_ENV_TEST) {
