@@ -31,11 +31,13 @@ class CustomersapiController extends ActiveController
     //returs id of customer if email and password is corrent
     public function actionAuthenticate($email, $password)
     {
-
+      
         $customer = Customers::find()
         ->where(['email' => $email,'password'=> $password ])
         ->one();
 
+        
+        $customer_id = 0;
         if($customer)
         {
             $customer_id = $customer->id;
@@ -49,13 +51,8 @@ class CustomersapiController extends ActiveController
                     $device->save();
                 }
             }
-
-            echo $customer_id;
         }
-        else
-        {
-            echo 0;
-        }
+        echo $customer_id;die;
     }
 
     public function actionCustomerswithdevices()
