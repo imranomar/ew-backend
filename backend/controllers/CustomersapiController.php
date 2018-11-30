@@ -21,6 +21,7 @@ use common\models\LoginForm;
 use yii\web\Response;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use backend\assets\components\GeneralHelper;
 use backend\assets\components\FirebaseHelper;
 
 class CustomersapiController extends ActiveController
@@ -109,26 +110,29 @@ class CustomersapiController extends ActiveController
             {
                 $getToken = rand(0, 99999);
                 $getTime = date("H:i:s");
-                $getModel->token = md5($getToken.$getTime);
+
+                $salt = GeneralHelper::generateSalt();
+
+                $getModel->token = md5($salt.$getToken.$getTime);
                 $getModel->save();
 
-
                 // Send Email
-                $namaPengirim="Owner Jsource Indonesia";
-                $emailadmin="fahmi.j@programmer.net";
-
                 $subject="Reset Password";
 
                 $mail_content="You have successfully reset your password<br/>
                     <a href='". Url::base(true).'/auth/reset?token='.$getModel->token."'>Click Here to Reset Password</a>";
 
-                Yii::$app->mailer->compose()
-                ->setFrom([Yii::$app->params['supportEmail'] => 'Eazywash'])
-                ->setTo($getEmail)
-                ->setSubject($subject)
-                ->setHtmlBody($mail_content)
-                ->send();
-
+                $headers = "Content-Type: text/html; charset=UTF-8\r\n";
+            
+                mail($getEmail, $subject, $mail_content, $headers);
+                
+                // Yii::$app->mailer->compose()
+                // ->setFrom([Yii::$app->params['supportEmail'] => 'Eazywash'])
+                // ->setTo($getEmail)
+                // ->setSubject($subject)
+                // ->setHtmlBody($mail_content)
+                // ->send();
+    
                 $response = array("Success"=> true, "Message" => "Reset password link is sent to email.");
             } else {
                 $response = array("Success"=> false, "Message" => "No details found");
