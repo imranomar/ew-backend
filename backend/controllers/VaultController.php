@@ -109,6 +109,9 @@ class VaultController extends Controller
             $card_no_mask = $_POST['cardnomask'];
             $exp_date = $_POST['cardexpdate'];
 
+            $myUpdate = "UPDATE vault SET as_default = 0 WHERE customer_id = " . $customer_id;
+            $result = Yii::$app->db->createCommand($myUpdate)->execute();
+
             $tmp_vault = new Vault();
             $tmp_vault->isNewRecord= true;
             $tmp_vault->customer_id = $customer_id;
@@ -117,6 +120,7 @@ class VaultController extends Controller
             $tmp_vault->expiry_month = substr($exp_date,2,4);
             $tmp_vault->payment_type = $pay_type ;
             $tmp_vault->transact = $transact;
+            $tmp_vault->as_default = 1;
             
 
             // $tmp_vault->customer_id = 9;
@@ -165,6 +169,9 @@ class VaultController extends Controller
             $card_no_mask = $_POST['cardnomask'];
             $exp_date = $_POST['cardexpdate'];
 
+            $myUpdate = "UPDATE vault SET as_default = 0 WHERE customer_id = " . $customer_id;
+            $result = Yii::$app->db->createCommand($myUpdate)->execute();
+
             $tmp_vault = new Vault();
             $tmp_vault->isNewRecord= true;
             $tmp_vault->customer_id = $customer_id;
@@ -173,6 +180,7 @@ class VaultController extends Controller
             $tmp_vault->expiry_month = substr($exp_date,2,4);
             $tmp_vault->payment_type = $pay_type ;
             $tmp_vault->transact = $transact;
+            $tmp_vault->as_default = 1;
         
 
             if($tmp_vault->save()) {

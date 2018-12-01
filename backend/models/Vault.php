@@ -34,7 +34,7 @@ class Vault extends \yii\db\ActiveRecord
     {
         return [
             [['customer_id', 'number', 'transact', 'payment_type', 'expiry_date', 'expiry_month'], 'required'],
-            [['customer_id', 'expiry_date', 'expiry_month', 'expiry_year'], 'integer'],
+            [['customer_id', 'expiry_date', 'expiry_month', 'expiry_year', 'as_default'], 'integer'],
             [['name'], 'string', 'max' => 200],
             [['number'], 'string', 'max' => 16],
             [['transact'], 'string', 'max' => 20],
