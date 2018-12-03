@@ -32,7 +32,7 @@ class Addresses extends \yii\db\ActiveRecord
     {
         return [
             [['customer_id', 'city_id', 'pobox', 'unit_number'], 'required'],
-            [['customer_id', 'city_id', 'pobox', 'unit_number'], 'integer'],
+            [['customer_id', 'city_id', 'pobox', 'unit_number', 'as_default'], 'integer'],
             [['street_name'], 'string', 'max' => 75],
             [['floor'], 'string', 'max' => 100],
         ];
