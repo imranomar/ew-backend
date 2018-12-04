@@ -4,10 +4,9 @@ header("Access-Control-Allow-Origin: *");
 
 
 use Yii;
+use yii\base\Model;
 use app\models\Tasks;
 use app\models\TasksQuery;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
 use yii\filters\auth\HttpBasicAuth; // to enable cors
@@ -59,6 +58,30 @@ public function behaviors()
     $behaviors['authenticator']['except'] = ['options'];
 
     return $behaviors;
+}
+
+public function actionCreatetasks() {
+    $response = array("Success" => false, "Message" => "Invalid request.");
+    $data = Yii::$app->request->post();
+    if (Yii::$app->request->isPost && isset($data['order_id']) && !empty($data['order_id'])) {
+        $pickup_task = new Tasks();
+        $pickup_task->order_id = $data['order_id'];
+        $pickup_task->type = 1;
+        $pickup_task->status = 0;
+        $pickup_task->at = date('Y-m-d H:i:s');
+        $pickup_task->save();
+
+        $drop_task = new Tasks();
+        $drop_task->order_id = $data['order_id'];
+        $drop_task->type = 2;
+        $drop_task->status = 0;
+        $drop_task->at = date('Y-m-d H:i:s');
+        $drop_task->save();
+
+        $response = array("Success" => true, "Message" => "Tasks created successfully.");
+    }
+
+    return $response;
 }
 
 
