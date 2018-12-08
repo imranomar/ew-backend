@@ -71,26 +71,26 @@ class OrdersapiController extends ActiveController
                 $data = Yii::$app->request->post();
 
                 $model->customer_id = $data['customer_id'];
-                $model->payment_id = $data['payment_id'];
-                $model->status = $data['status'];
+                $model->status = isset($data['status'])? $data['status']: 0;
                 $model->pickup_date = $data['pickup_date'];
                 $model->pickup_at_door = $data['pickup_at_door'];
                 $model->pickup_time_from = $data['pickup_time_from'];
                 $model->pickup_time_to = $data['pickup_time_to'];
                 $model->pickup_type = $data['pickup_type'];
                 $model->pickup_price = $data['pickup_price'];
-                $model->drop_date = $data['drop_date'];
-                $model->drop_at_door = $data['drop_at_door'];
-                $model->drop_time_from = $data['drop_time_from'];
-                $model->drop_time_to = $data['drop_time_to'];
-                $model->drop_type = $data['drop_type'];
-                $model->drop_price = $data['drop_price'];
                 $model->address_id = $data['address_id'];
                 $model->same_day_pickup = $data['same_day_pickup'];
-                $model->next_day_drop = $data['next_day_drop'];
-                $model->comments = $data['comments'];
+                $model->payment_id = isset($data['payment_id'])? $data['payment_id']: null;
+                $model->drop_date = isset($data['drop_date'])? $data['drop_date']: null;
+                $model->drop_at_door = isset($data['drop_at_door'])? $data['drop_at_door']: null;
+                $model->drop_time_from = isset($data['drop_time_from'])? $data['drop_time_from']: null;
+                $model->drop_time_to = isset($data['drop_time_to'])? $data['drop_time_to']: null;
+                $model->drop_type = isset($data['drop_type'])? $data['drop_type']: null;
+                $model->drop_price = isset($data['drop_price'])? $data['drop_price']: null;
+                $model->next_day_drop = isset($data['next_day_drop'])? $data['next_day_drop']: null;
+                $model->comments = isset($data['comments'])? $data['comments']: null;
 
-                if ($model->validate() && $model->save()) {
+                if ($model->save(false)) {
                     $pickup_task = new Tasks();
                     $pickup_task->order_id = $model->id;
                     $pickup_task->type = 1;

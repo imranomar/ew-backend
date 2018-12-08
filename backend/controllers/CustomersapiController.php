@@ -8,6 +8,7 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
 
 use Yii;
+use app\models\Addresses;
 use app\models\Customers;
 use app\models\CustomerSearch;
 use app\models\CustomerDevices;
@@ -96,6 +97,49 @@ class CustomersapiController extends ActiveController
             'delete' => ['DELETE'],
         ];
     }
+
+    public function actionAdduserinfo() {
+        try 
+        {
+            $response = array("Success"=> false, "Message" => "Invalid request.");
+
+            $data = Yii::$app->request->post();
+            if (Yii::$app->request->isPost && !empty($data)) {
+                if(isset($data['id']) && $data['id'] > 0) {
+                    $model = $this->findModel($data['id']);
+                } else {
+                    $model = new Customers();
+                }
+
+                $model->full_name = $data['full_name'];
+                $model->phone = $data['phone'];
+                
+                if($model->save()) {
+                    if(isset($data['address_id']) && $data['address_id'] > 0) {
+                        $addressModel = $this->findAddressModel($data['address_id']);
+                    } else {
+                        $addressModel = new Addresses();
+                    }
+
+                    $addressModel->customer_id = $model->id;
+                    $addressModel->city_id = $data['city_id'];
+
+                    $addressModel->save();
+
+                    $data['id'] = $model->id;
+                    $data['address_id'] = $addressModel->id;
+
+                    $response = array("Success"=> true, "Message" => "User information saved successfully.", "Data" => $data);
+                } else {
+                    $response = array("Success"=> false, "Message" => "Error while saving record.");
+                }
+            }
+        } catch(Exception $ex) {
+            $response = array("Success"=> false, "Message" => $ex->message);
+        }
+
+        return $response;
+    } 
 
     public function actionForgotpassword()
 	{
@@ -301,6 +345,15 @@ class CustomersapiController extends ActiveController
     protected function findModel($id)
     {
         if (($model = Customers::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findAddressModel($id)
+    {
+        if (($model = Addresses::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

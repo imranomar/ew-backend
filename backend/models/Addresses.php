@@ -31,9 +31,9 @@ class Addresses extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id', 'city_id', 'pobox', 'unit_number'], 'required'],
-            [['customer_id', 'city_id', 'pobox', 'unit_number', 'as_default'], 'integer'],
-            [['street_name'], 'string', 'max' => 75],
+            [['customer_id', 'city_id'], 'required'],
+            [['customer_id', 'city_id', 'pobox', 'as_default'], 'integer'],
+            [['street_name', 'unit_number'], 'string', 'max' => 75],
             [['floor'], 'string', 'max' => 100],
         ];
     }
