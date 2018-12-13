@@ -23,16 +23,18 @@ use yii\helpers\Html;
 }
 
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <div class="success-page">
     <h4 class="text-success"><i class="glyphicon glyphicon-ok-circle"></i><h4>
     <h2 class="text-success">Payment Successful !</h2>
-        <a onclick="redirectToDashboard()" class="btn btn-success">View Tasks</a>
+        <a href="javascript:void(0)" id="success-btn" class="btn btn-success">View Tasks</a>
     </div>
 </div>
 
 <script>
-function redirectToDashboard() {
-    window.top.location.hash = '#dashboard';
-}
+	document.getElementById('success-btn').addEventListener('click', handleButtonClick, false);
+	function handleButtonClick(e) {
+	  window.parent.postMessage({
+		payment_success: true
+	  }, '*');
+	}
 </script>

@@ -134,6 +134,6 @@ class Orders extends \yii\db\ActiveRecord
 
     public function getItems()
     {
-        return $this->hasMany(Orderitems::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderItems::className(), ['order_id' => 'id']);
     }
 }

@@ -4,8 +4,10 @@ header("Access-Control-Allow-Origin: *");
 
 
 use Yii;
-use app\models\Orderitems;
-use app\models\OrderitemsQuery;
+use app\models\Orders;
+use app\models\Tasks;
+use app\models\OrderItems;
+use app\models\OrderItemsQuery;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -16,7 +18,7 @@ use yii\web\Response;
 
 class OrderitemsapiController extends ActiveController
 {
-    public $modelClass = 'app\models\Orderitems';
+    public $modelClass = 'app\models\OrderItems';
     public $enableCsrfValidation = false;
 
     public function actionTest()
@@ -31,32 +33,78 @@ class OrderitemsapiController extends ActiveController
      */
     public function actionCreatemultiple()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $orderitems = Yii::$app->request->post();
-        
-        $count = count($orderitems);
+        try
+        {   
+            $data = array("Success"=> false, "Message" => "Invalid request");
 
-        if($count == 0) 
-        {
-            $data = array("Success"=> false, "Message" => "No order items found.");
-            return $data;
+            if (Yii::$app->request->isPost) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                $data = Yii::$app->request->post();
+                
+                if(!isset($data['task_id']) || $data['task_id'] <= 0) 
+                {
+                    $data = array("Success"=> false, "Message" => "Task id required");
+                    return $data;
+                }
+
+                $task_id = $data['task_id'];
+
+                if(!isset($data['order_id']) || $data['order_id'] <= 0) 
+                {
+                    $data = array("Success"=> false, "Message" => "Order id required");
+                    return $data;
+                }
+
+                $order_id = $data['order_id'];
+
+                if(!isset($data['order_items']) && count($data['order_items']) == 0) 
+                {
+                    $data = array("Success"=> false, "Message" => "No order items found.");
+                    return $data;
+                }
+
+                $orderitems = $data['order_items'];
+
+                foreach ($orderitems as $orderitem) {
+                // echo '<pre>';print_r($orderitem);die;   
+                    $item = new OrderItems();
+                    $item->order_id = $orderitem["order_id"];
+                    $item->title = $orderitem["title"];
+                    $item->type = $orderitem["type"];
+                    $item->quantity = $orderitem["quantity"];
+                    $item->price = $orderitem["price"];
+                    //echo '<pre>';print_r($item);die;
+                    //Try to save the models. Validation is not needed as it's already been done.
+                    $status = $item->save();
+                }
+
+                $model = Orders::findOne($order_id);
+                if ($model != null) {
+                    $model->pickup_close_id = $data['pickup_close_id'];
+                    $model->pickup_close_other_id = $data['pickup_close_other_id'];
+                    $model->pickup_close_comments = $data['pickup_close_comments'];
+                    $model->status = $data['order_status'];
+                    $model->save();
+
+                    $taskModel = Tasks:: findOne($task_id);
+
+                    if ($taskModel != null) {
+                        $taskModel->status = $data['task_status'];
+                        $taskModel->save();
+                    } else {
+                        $response = array("Success" => false, "Message" => "Task not found");
+                        return $response;
+                    }
+                } else {
+                    $response = array("Success" => false, "Message" => "Order not found");
+                    return $response;
+                }
+
+                $data = array("Success"=> true, "Message" => "Order Items inserted successfully");
+            }
+        } catch(Exception $ex) {
+            $data = array("Success"=> false, "Message" => $ex->message);
         }
-
-
-        foreach ($orderitems as $orderitem) {
-           // echo '<pre>';print_r($orderitem);die;   
-            $item = new Orderitems();
-            $item->order_id = $orderitem["order_id"];
-            $item->title = $orderitem["title"];
-            $item->type = $orderitem["type"];
-            $item->quantity = $orderitem["quantity"];
-            $item->price = $orderitem["price"];
-            //echo '<pre>';print_r($item);die;
-            //Try to save the models. Validation is not needed as it's already been done.
-            $status = $item->save();
-        }
-
-        $data = array("Success"=> true, "Message" => "Order Items inserted successfully");
         return $data;
     }
 

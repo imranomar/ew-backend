@@ -23,18 +23,19 @@ use yii\helpers\Html;
 }
     
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <div class="error-page">
     <h4 class="text-danger"><i class="glyphicon glyphicon-remove-cicle"></i><h4>
     <h2 class="text-danger">Payment Failure !! Click below button to try again</h2>
-        <a onclick="closeModal()" class="btn btn-danger">Re-Process</a>
+        <a href="javascript:void(0)" id="error-btn" class="btn btn-danger">Re-Process</a>
     </div>
 </div>
 
 <script>
-function closeModal()
-{
-    //$("#CloseDropTaskModal .modal-close", parent.document).trigger("click");
-    parent.document.location.reload();
-}
+	document.getElementById('error-btn').addEventListener('click', handleButtonClick, false);
+	function handleButtonClick(e) {
+	  window.parent.postMessage({
+		payment_success: false
+	  }, '*');
+	}
 </script>
