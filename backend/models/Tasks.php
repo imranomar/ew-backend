@@ -66,6 +66,7 @@ class Tasks extends \yii\db\ActiveRecord
             'order_id' => 'Order ID',
             'type' => 'Type',
             'at' => 'At',
+            'status' => 'Status'
         ];
     }
 
@@ -76,7 +77,11 @@ class Tasks extends \yii\db\ActiveRecord
     public static function find()
     {
         //return new TasksQuery(get_called_class());
-        return parent::find()->where(['status' => 0]);
+        if(isset($_GET['r']) && strpos($_GET['r'], 'api') == false) {
+            return new TasksQuery(get_called_class());
+        } else {
+            return parent::find()->where(['status' => 0]);
+        }
     }
 
     public function getOrder()

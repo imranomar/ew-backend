@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use app\models\Customers;
 use app\models\CustomerSearch;
+use app\models\AddressesSearch;
+use app\models\VaultSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -51,8 +53,20 @@ class CustomersController extends Controller
      */
     public function actionView($id)
     {
+        $addressSearchModel = new AddressesSearch();
+        $addressDataProvider = $addressSearchModel->search(Yii::$app->request->queryParams);
+        $addressDataProvider->query->andFilterWhere(['customer_id'=> $id]); 
+
+        $vaultSearchModel = new VaultSearch();
+        $vaultDataProvider = $vaultSearchModel->search(Yii::$app->request->queryParams);
+        $vaultDataProvider->query->andFilterWhere(['customer_id'=> $id]); 
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'addressSearchModel' => $addressSearchModel,
+            'addressDataProvider' => $addressDataProvider,
+            'vaultSearchModel' => $vaultSearchModel,
+            'vaultDataProvider' => $vaultDataProvider
         ]);
     }
 

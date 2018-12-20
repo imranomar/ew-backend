@@ -4,18 +4,18 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Vault */
+/* @var $model app\models\Addresses */
 
 $this->title = 'Details';
-$this->params['breadcrumbs'][] = ['label' => 'Vaults', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Addresses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vault-view">
+<div class="addresses-view">
 
-    <h1>
-    <?= Html::encode($this->title) ?>
+    <h1><?= Html::encode($this->title) ?>
 
     <p class="pull-right">
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -31,13 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'customer_id',
-            'name',
-            'number',
-            'transact',
-            'payment_type',
-            'expiry_date',
-            'expiry_month',
-            'expiry_year',
+            'city_id',
+            'street_name',
+            'pobox',
+            'floor',
+            'unit_number',
+            'as_default',
         ],
     ]) ?>
 

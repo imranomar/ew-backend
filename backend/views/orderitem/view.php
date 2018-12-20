@@ -4,18 +4,20 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Vault */
+/* @var $model app\models\OrderItems */
 
-$this->title = 'Details';
-$this->params['breadcrumbs'][] = ['label' => 'Vaults', 'url' => ['index']];
+$this->title = $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['/order/index', 'order_id' => $model->order_id]];
+$this->params['breadcrumbs'][] = ['label' => 'Order Items', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vault-view">
+<div class="order-items-view">
 
     <h1>
     <?= Html::encode($this->title) ?>
 
     <p class="pull-right">
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -30,14 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'customer_id',
-            'name',
-            'number',
-            'transact',
-            'payment_type',
-            'expiry_date',
-            'expiry_month',
-            'expiry_year',
+            'order_id',
+            'title',
+            'type',
+            'quantity',
+            'price',
         ],
     ]) ?>
 

@@ -2,19 +2,21 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Orders */
 
-$this->title = $model->id;
+$this->title = 'Details';
 $this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="orders-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title) ?>
 
-    <p>
+    <p class="pull-right">
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -24,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+    </h1>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -50,5 +53,34 @@ $this->params['breadcrumbs'][] = $this->title;
             'comments',
         ],
     ]) ?>
+
+
+    
+<div class="orders-index">
+
+<h1>
+    Order Items
+    <?= Html::a('Create Items', ['orderitem/create', 'order_id' => $model->id], ['class' => 'btn btn-success pull-right']) ?>
+</h1>
+
+<?php Pjax::begin(); ?>    
+<?= GridView::widget([
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
+
+        'id',
+        'order_id',
+        'title',
+        'type',
+        'quantity',
+        'price',
+
+        [ 'class' => 'yii\grid\ActionColumn' ]
+    ],
+]); ?>
+<?php Pjax::end(); ?>
+</div>
 
 </div>

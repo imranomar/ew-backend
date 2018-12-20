@@ -1,8 +1,10 @@
 <?php
 
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrdersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -12,13 +14,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="orders-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Orders', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+    <h1><?= Html::encode($this->title) ?>
+        <?= Html::a('Create Orders', ['create'], ['class' => 'btn btn-success pull-right']) ?>
+    </h1>
+    <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -44,8 +43,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'same_day_pickup',
             'next_day_drop',
             'comments',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete} {viewTasks}',  // the default buttons + your custom button
+                'buttons' => [
+                    'viewTasks' => function($url, $model, $key) {     // render your custom button
+                        $url = Url::to(['task/index', 'order_id' => $model->id]);
+                        return Html::a('<span class="glyphicon glyphicon-list"></span>', $url, [     
+                            'data-pjax' => '0',
+                            'title' => 'Tasks'
+                        ]);
+                    }
+                ]
+            ]
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>
