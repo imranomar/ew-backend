@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -71,13 +72,37 @@ $this->params['breadcrumbs'][] = $this->title;
         ['class' => 'yii\grid\SerialColumn'],
 
         'id',
-        'order_id',
         'title',
         'type',
         'quantity',
         'price',
 
-        [ 'class' => 'yii\grid\ActionColumn' ]
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{view} {update} {delete}',  // the default buttons + your custom button
+            'buttons' => [
+                'view' => function($url, $model, $key) {     // render your custom button
+                    $url = Url::to(['orderitem/view', 'id' => $model->id]);
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [     
+                        'data-pjax' => '0',
+                        'title' => 'View'
+                    ]);
+                },
+                'update' => function($url, $model, $key) {     // render your custom button
+                    $url = Url::to(['orderitem/update', 'id' => $model->id]);
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [     
+                        'data-pjax' => '0',
+                        'title' => 'update'
+                    ]);
+                },
+                'delete' => function($url, $model, $key) {     // render your custom button
+                    $url = Url::to(['orderitem/delete', 'id' => $model->id]);
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [     
+                        'title' => 'Delete'
+                    ]);
+                }
+            ]
+        ]
     ],
 ]); ?>
 <?php Pjax::end(); ?>

@@ -59,13 +59,15 @@ $this->params['breadcrumbs'][] = $this->title;
         ['class' => 'yii\grid\SerialColumn'],
 
         'id',
-        'customer_id',
-        'city_id',
         'street_name',
         'pobox',
         'floor',
         'unit_number',
         'as_default',
+        [
+            'attribute' => 'City',
+            'value'=>'city.title', //relation name with their attribute
+        ],
 
         [
             'class' => 'yii\grid\ActionColumn',
@@ -112,7 +114,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ['class' => 'yii\grid\SerialColumn'],
 
         'id',
-        'customer_id',
         'name',
         'number',
         'transact',

@@ -63,9 +63,26 @@ class Addresses extends \yii\db\ActiveRecord
         return new AddressesQuery(get_called_class());
     }
 
+    public function extraFields() 
+    {
+        return [
+            'customer'=>function($model){
+                return $model->customer;
+            },
+            'city'=>function($model){
+                return $model->city;
+            }
+        ];
+    }
+
 
     public function getCustomer()
     {
         return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+    }
+
+    public function getCity()
+    {
+        return $this->hasOne(Cities::className(), ['id' => 'city_id']);
     }
 }
