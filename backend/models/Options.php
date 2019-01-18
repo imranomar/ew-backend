@@ -30,7 +30,7 @@ class Options extends \yii\db\ActiveRecord
     {
         return [
             [['holidays', 'weekend'], 'required'],
-            [['same_day_pickup_price', 'next_day_delivery_price'], 'integer'],
+            [['same_day_pickup_price', 'next_day_delivery_price'], 'double'],
             [['holidays'], 'string', 'max' => 1000],
             [['weekend'], 'string', 'max' => 10],
         ];
