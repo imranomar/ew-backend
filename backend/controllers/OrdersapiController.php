@@ -67,7 +67,16 @@ class OrdersapiController extends ActiveController
             $data = Yii::$app->request->post();
             
             if (Yii::$app->request->isPost) {
-                $model = new Orders();
+                $update_mode = false;
+                $is_completed = isset($data['is_completed']) && $data['is_completed'] == true? true: false;
+
+                if(isset($data['id']) && $data['id'] > 0) {
+                    $model = $this->findModel($data['id']);
+                    $update_mode = true;
+                } else {
+                    $model = new Orders();
+                }
+
                 $data = Yii::$app->request->post();
 
                 $model->customer_id = $data['customer_id'];
@@ -89,23 +98,28 @@ class OrdersapiController extends ActiveController
                 $model->drop_price = isset($data['drop_price'])? $data['drop_price']: null;
                 $model->next_day_drop = isset($data['next_day_drop'])? $data['next_day_drop']: null;
                 $model->comments = isset($data['comments'])? $data['comments']: null;
+                $model->is_completed = $is_completed;
 
                 if ($model->save(false)) {
-                    $pickup_task = new Tasks();
-                    $pickup_task->order_id = $model->id;
-                    $pickup_task->type = 1;
-                    $pickup_task->status = 0;
-                    $pickup_task->at = date('Y-m-d H:i:s');
-                    $pickup_task->save();
+                    if($is_completed == true) {
+                        $pickup_task = new Tasks();
+                        $pickup_task->order_id = $model->id;
+                        $pickup_task->type = 1;
+                        $pickup_task->status = 0;
+                        $pickup_task->at = date('Y-m-d H:i:s');
+                        $pickup_task->save();
 
-                    $drop_task = new Tasks();
-                    $drop_task->order_id = $model->id;
-                    $drop_task->type = 2;
-                    $drop_task->status = 0;
-                    $drop_task->at = date('Y-m-d H:i:s');
-                    $drop_task->save();
+                        $drop_task = new Tasks();
+                        $drop_task->order_id = $model->id;
+                        $drop_task->type = 2;
+                        $drop_task->status = 0;
+                        $drop_task->at = date('Y-m-d H:i:s');
+                        $drop_task->save();
 
-                    $response = array("Success" => true, "Message" => "Order created successfully");
+                        $response = array("Success" => true, "Message" => "Order created successfully", "data"=> $model);
+                    } else {
+                        $response = array("Success" => true, "Message" => "Order saved successfully", "data"=> $model);
+                    }
                 } else {
                     $response = array("Success" => false, "Message" => "Error while creating order");
                 }
@@ -116,6 +130,15 @@ class OrdersapiController extends ActiveController
         }
 
         return $response;
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Orders::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
 }
