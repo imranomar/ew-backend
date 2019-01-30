@@ -57,6 +57,35 @@ class CustomersapiController extends ActiveController
         echo $customer_id;die;
     }
 
+
+    public function actionFb_login_register()
+    {
+        $response = array("Success" => false, "Message" => "Invalid request.");
+        $data = Yii::$app->request->post();
+        if (Yii::$app->request->isPost && isset($data['facebook_id']) && !empty($data['facebook_id'])) {
+            $customer = Customers::find()
+                ->where(['email' => $data['email'], 'facebook_id'=> $data['facebook_id'] ])
+                ->one();
+
+            if($customer) {
+                $response = array("Success"=> true, "Data" => $customer);
+            } else {
+                $newCustomer = new Customer();
+                $newCustomer->full_name = $data['full_name'];
+                $newCustomer->email = $data['email'];
+                $newCustomer->facebook_id = $data['facebook_id'];
+                $newCustomer->sex = $data['sex'];
+
+                if($newCustomer->save()) {
+                    $response = array("Success"=> true, "Data" => $newCustomer);
+                } else {
+                    $response = array("Success"=> false, "Message" => "Error while registering from Facebook!!!");
+                }
+            }
+        }
+        return $response;
+    }
+
     public function actionCustomerswithdevices()
     {
         $data = array("Success"=> false, "Message" => "No order items found.");
