@@ -45,7 +45,7 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['customer_id', 'pickup_date', 'pickup_time_from', 'pickup_time_to', 'pickup_type', 'pickup_price', 'drop_date', 'drop_time_from', 'drop_time_to', 'drop_type', 'drop_price', 'address_id', 'same_day_pickup', 'next_day_drop'], 'required'],
-            [['customer_id', 'payment_id', 'status', 'pickup_at_door', 'pickup_time_from', 'pickup_time_to', 'pickup_type', 'drop_at_door', 'drop_time_from', 'drop_time_to', 'drop_type', 'address_id', 'same_day_pickup', 'next_day_drop', 'pickup_close_id', 'pickup_close_other_id','is_completed'], 'integer'],
+            [['customer_id', 'vault_id', 'payment_id', 'status', 'pickup_at_door', 'pickup_time_from', 'pickup_time_to', 'pickup_type', 'drop_at_door', 'drop_time_from', 'drop_time_to', 'drop_type', 'address_id', 'same_day_pickup', 'next_day_drop', 'pickup_close_id', 'pickup_close_other_id','is_completed'], 'integer'],
             [['pickup_date', 'drop_date'], 'safe'],
             [['pickup_price', 'drop_price'], 'number'],
             [['comments', 'pickup_close_comments'], 'string', 'max' => 1000],
@@ -61,6 +61,7 @@ class Orders extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'customer_id' => 'Customer ID',
+            'vault_id' => 'Vault ID',
             'payment_id' => 'Payment ID',
             'status' => 'Status',
             'pickup_date' => 'Pickup Date',
@@ -124,7 +125,7 @@ class Orders extends \yii\db\ActiveRecord
 
     public function getVault()
     {
-        return $this->hasOne(Vault::className(), ['id' => 'payment_id']);
+        return $this->hasOne(Vault::className(), ['id' => 'vault_id']);
     }
 
     public function getTasks()

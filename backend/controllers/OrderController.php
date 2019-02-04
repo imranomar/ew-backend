@@ -143,15 +143,17 @@ class OrderController extends Controller
         {
             if(isset($_GET["reason"]) && $_GET["reason"] > 0) {
                 // Error
-
                 return $this->render('payment_error');
             } else {
-                //echo '<pre>';print_r($_GET);die;
                 $model = $this->findModel($_GET["orderid"]);
 
                 $payment = new Payments();
                 $payment->customer_id = $model->customer_id;
-                $payment->vault_id = $model->payment_id;
+                $payment->vault_id = $model->vault_id;
+                $payment->transaction_id = isset($_GET["transact"])?$_GET["transact"]:null;
+                $payment->amount = isset($_GET["amount"])?$_GET["amount"]:null;
+                $payment->description = isset($_GET["ordertext"])?$_GET["ordertext"]:null;
+                $payment->status = 1;
                 $payment->save();
 
                 $task = Tasks::find()->Where(array("order_id" => $model->id, "type" => 2))->one();

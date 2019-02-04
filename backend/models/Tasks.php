@@ -42,7 +42,7 @@ class Tasks extends \yii\db\ActiveRecord
                 return $model->order;
             },
             'vault'=>function($model){
-                return $this->getVault($model->order->payment_id);
+                return $this->getVault($model->order->vault_id);
             },
             'payment'=>function($model){
                 return $this->getPayment($model->order->payment_id);

@@ -9,7 +9,12 @@ use Yii;
  *
  * @property string $id
  * @property integer $customer_id
- * @property integer $vault_id
+ * @property string $vault_id
+ * @property string $transaction_id
+ * @property string $amount
+ * @property string $description
+ * @property integer $status
+ * @property string $created_at
  */
 class Payments extends \yii\db\ActiveRecord
 {
@@ -27,8 +32,12 @@ class Payments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id', 'vault_id'], 'required'],
-            [['customer_id', 'vault_id'], 'integer'],
+            [['customer_id', 'vault_id', 'amount', 'description'], 'required'],
+            [['customer_id', 'vault_id', 'status'], 'integer'],
+            [['amount'], 'number'],
+            [['description'], 'string'],
+            [['created_at'], 'safe'],
+            [['transaction_id'], 'string', 'max' => 50],
         ];
     }
 
@@ -41,6 +50,11 @@ class Payments extends \yii\db\ActiveRecord
             'id' => 'ID',
             'customer_id' => 'Customer ID',
             'vault_id' => 'Vault ID',
+            'transaction_id' => 'Transaction ID',
+            'amount' => 'Amount',
+            'description' => 'Description',
+            'status' => '0=>Unsuccessful, 1=>Successful',
+            'created_at' => 'Created At',
         ];
     }
 

@@ -89,7 +89,7 @@ class OrdersapiController extends ActiveController
                 $model->pickup_price = $data['pickup_price'];
                 $model->address_id = $data['address_id'];
                 $model->same_day_pickup = $data['same_day_pickup'];
-                $model->payment_id = isset($data['payment_id'])? $data['payment_id']: null;
+                $model->vault_id = isset($data['vault_id'])? $data['vault_id']: null;
                 $model->drop_date = isset($data['drop_date'])? $data['drop_date']: null;
                 $model->drop_at_door = isset($data['drop_at_door'])? $data['drop_at_door']: null;
                 $model->drop_time_from = isset($data['drop_time_from'])? $data['drop_time_from']: null;

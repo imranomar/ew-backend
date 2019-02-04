@@ -14,6 +14,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'customer_id')->textInput() ?>
 
+    <?= $form->field($model, 'vault_id')->textInput(['maxlength' => true]) ?>
+    
     <?= $form->field($model, 'payment_id')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>

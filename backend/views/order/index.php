@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'customer_id',
+            'vault_id',
             'payment_id',
             'status',
             'pickup_date',
