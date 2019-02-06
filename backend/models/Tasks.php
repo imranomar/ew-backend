@@ -76,12 +76,12 @@ class Tasks extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        //return new TasksQuery(get_called_class());
-        if(isset($_GET['r']) && strpos($_GET['r'], 'api') == false) {
-            return new TasksQuery(get_called_class());
-        } else {
-            return parent::find()->where(['status' => 0]);
-        }
+        return new TasksQuery(get_called_class());
+        // if(isset($_GET['r']) && strpos($_GET['r'], 'api') == false) {
+        //     return new TasksQuery(get_called_class());
+        // } else {
+        //     return parent::find()->where(['status' => 0]);
+        // }
     }
 
     public function getOrder()

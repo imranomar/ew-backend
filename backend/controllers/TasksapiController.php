@@ -70,7 +70,8 @@ class TasksapiController extends ActiveController
     public function actionIndex() {
         $activeData = new ActiveDataProvider([
             'query' => Tasks::find(),
-            'pagination' => false
+            'pagination' => false,
+            'sort'=> ['defaultOrder' => ['status' => SORT_ASC]]
         ]);
         return $activeData;
     }
