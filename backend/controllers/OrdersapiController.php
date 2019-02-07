@@ -7,7 +7,10 @@ use Yii;
 use app\models\Orders;
 use app\models\OrdersSearch;
 use app\models\Tasks;
+use app\models\Operators;
+use app\models\OperatorDevices;
 use yii\rest\ActiveController;
+use backend\assets\components\FirebaseHelper;
 // to enable cors
 
 class OrdersapiController extends ActiveController
@@ -116,6 +119,18 @@ class OrdersapiController extends ActiveController
                         $drop_task->at = date('Y-m-d H:i:s');
                         $drop_task->save();
 
+                        if($model->pickup_date == date('Y-m-d')) {
+                            // Send Notifications
+                            
+                            $notification_data = [
+                                "title" => "Pickup order created today",
+                                "body" => "Pickup order created today"
+                            ];
+
+                            $this->sendNotificationToOperator($notification_data);
+                            
+                        }
+
                         $response = array("Success" => true, "Message" => "Order created successfully", "data"=> $model);
                     } else {
                         $response = array("Success" => true, "Message" => "Order saved successfully", "data"=> $model);
@@ -130,6 +145,29 @@ class OrdersapiController extends ActiveController
         }
 
         return $response;
+    }
+
+    
+    private function sendNotificationToOperator($notification_data)
+    {
+        
+        $d_ids = Operators::find()
+                            ->innerJoinWith('operatorDevices', false)
+                            ->select('DISTINCT GROUP_CONCAT(operator_devices.device_id) as device_ids')
+                            ->asArray()
+                            ->one();
+
+        $device_ids = [];
+        
+        if(isset($d_ids['device_ids']) && !empty($d_ids['device_ids']))
+            $device_ids = explode(',',$d_ids['device_ids']);
+
+        if(COUNT($device_ids) > 0) {
+            $result = array();
+            $result = FirebaseHelper::sendPushNotification($device_ids, $notification_data);
+
+        } 
+        
     }
 
     protected function findModel($id)
