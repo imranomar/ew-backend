@@ -145,3 +145,46 @@ $this->params['breadcrumbs'][] = $this->title;
 ]); ?>
 <?php Pjax::end(); ?>
 </div>
+
+
+<h1>
+    Payments
+</h1>
+
+<?php Pjax::begin(); ?>    
+<?= GridView::widget([
+    'dataProvider' => $paymentDataProvider,
+    'filterModel' => $paymentSearchModel,
+    'columns' => [
+        ['class' => 'yii\grid\SerialColumn'],
+
+        'id',
+        'customer_id',
+        'vault_id',
+        'transaction_id',
+        'amount',
+        'created_at',
+
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{view} {delete}',  // the default buttons + your custom button
+            'buttons' => [
+                'view' => function($url, $model, $key) {     // render your custom button
+                    $url = Url::to(['payment/view', 'id' => $model->id]);
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [     
+                        'data-pjax' => '0',
+                        'title' => 'View'
+                    ]);
+                },
+                'delete' => function($url, $model, $key) {     // render your custom button
+                    $url = Url::to(['payment/delete', 'id' => $model->id]);
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [     
+                        'title' => 'Delete'
+                    ]);
+                }
+            ]
+        ]
+    ],
+]); ?>
+<?php Pjax::end(); ?>
+</div>

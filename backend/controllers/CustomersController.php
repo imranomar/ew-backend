@@ -6,6 +6,7 @@ use Yii;
 use app\models\Customers;
 use app\models\CustomerSearch;
 use app\models\AddressesSearch;
+use app\models\PaymentsSearch;
 use app\models\VaultSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -61,12 +62,20 @@ class CustomersController extends Controller
         $vaultDataProvider = $vaultSearchModel->search(Yii::$app->request->queryParams);
         $vaultDataProvider->query->andFilterWhere(['customer_id'=> $id]); 
 
+        $paymentSearchModel = new PaymentsSearch();
+        $paymentDataProvider = $paymentSearchModel->search(Yii::$app->request->queryParams);
+        $paymentDataProvider->query->andFilterWhere(['customer_id'=> $id]); 
+
+
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'addressSearchModel' => $addressSearchModel,
             'addressDataProvider' => $addressDataProvider,
             'vaultSearchModel' => $vaultSearchModel,
-            'vaultDataProvider' => $vaultDataProvider
+            'vaultDataProvider' => $vaultDataProvider,
+            'paymentSearchModel' => $paymentSearchModel,
+            'paymentDataProvider' => $paymentDataProvider
         ]);
     }
 

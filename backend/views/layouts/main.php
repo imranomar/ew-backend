@@ -36,17 +36,21 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Customers', 'url' => ['/customers/index']],
-        ['label' => 'Orders', 'url' => ['/order/index']],
-        ['label' => 'Slots Pricing', 'url' => ['/slotspricing/index']],
-        ['label' => 'Options', 'url' => ['/options/index']],
-        ['label' => 'Vault', 'url' => ['/vault/index']],
-        
+        ['label' => 'Home', 'url' => ['/site/index']]        
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
+        $menuItems = [
+            ['label' => 'Customers', 'url' => ['/customers/index']],
+            ['label' => 'Addresses', 'url' => ['/address/index']],
+            ['label' => 'Orders', 'url' => ['/order/index']],
+            ['label' => 'Tasks', 'url' => ['/task/index']],
+            ['label' => 'Slots Pricing', 'url' => ['/slotspricing/index']],
+            ['label' => 'Options', 'url' => ['/options/index']],
+            ['label' => 'Vault', 'url' => ['/vault/index']],
+            
+        ];
         $menuItems[] = ['label' => 'Operators', 'url' => ['/operator/index']];
         $menuItems[] = ['label' => 'Notifications', 'url' => ['/notifications/index']];
         $menuItems[] = '<li>'
