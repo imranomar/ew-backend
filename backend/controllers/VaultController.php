@@ -102,12 +102,12 @@ class VaultController extends Controller
 
         $data = Yii::$app->request->post();
 
-        if (Yii::$app->request->isPost) {
-            $customer_id = $_POST['orderid'];
-            $transact = $_POST['transact']; //used later for recurring payment
-            $pay_type = $_POST['paytype']; //type of card indicator
-            $card_no_mask = $_POST['cardnomask'];
-            $exp_date = $_POST['cardexpdate'];
+        if (Yii::$app->request->isGet) {
+            $customer_id = $_GET['orderid'];
+            $transact = $_GET['transact']; //used later for recurring payment
+            $pay_type = $_GET['paytype']; //type of card indicator
+            $card_no_mask = $_GET['cardnomask'];
+            $exp_date = $_GET['cardexpdate'];
 
             $myUpdate = "UPDATE vault SET as_default = 0 WHERE customer_id = " . $customer_id;
             $result = Yii::$app->db->createCommand($myUpdate)->execute();
@@ -160,14 +160,12 @@ class VaultController extends Controller
 
     public function actionCreatevaultweb()
     {
-        $data = Yii::$app->request->post();
-
-        if (Yii::$app->request->isPost) {
-            $customer_id = $_POST['orderid'];
-            $transact = $_POST['transact']; //used later for recurring payment
-            $pay_type = $_POST['paytype']; //type of card indicator
-            $card_no_mask = $_POST['cardnomask'];
-            $exp_date = $_POST['cardexpdate'];
+        if (Yii::$app->request->isGet) {
+            $customer_id = $_GET['orderid'];
+            $transact = $_GET['transact']; //used later for recurring payment
+            $pay_type = $_GET['paytype']; //type of card indicator
+            $card_no_mask = $_GET['cardnomask'];
+            $exp_date = $_GET['cardexpdate'];
 
             $myUpdate = "UPDATE vault SET as_default = 0 WHERE customer_id = " . $customer_id;
             $result = Yii::$app->db->createCommand($myUpdate)->execute();

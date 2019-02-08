@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 ?>
 
-<style>
+<!-- <style>
 .navbar, .footer, .yii-debug-toolbar_position_bottom{display:none !important;}
 .wrap > .container {
     padding: 0;
@@ -29,9 +29,51 @@ use yii\helpers\Html;
     <h2 class="text-success">Payment method added Successfully !</h2>
         <a onclick="loadVaults()" class="btn btn-success">Done</a>
     </div>
+</div> -->
+<style>
+    
+    .loader-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 1000001;
+    top: 0;
+    background: #fff;
+    left: 0;
+}
+  
+  .loader {
+    position: absolute;
+    left: calc(50% - 40px);
+    top: calc(50% - 40px);
+    z-index: 1;
+    width: 60px;
+    height: 60px;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    -webkit-animation: spin .8s linear infinite;
+    animation: spin .8s linear infinite;
+  }
+  
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+<div class="loader-container">
+    <div class="loader"></div>
 </div>
 
 <script>
+setTimeout(function() {
+    loadVaults();
+}, 2000)
 function loadVaults() {
     window.parent.loadVaults();
 }
