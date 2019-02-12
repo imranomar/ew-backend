@@ -62,7 +62,7 @@ class Customers extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'full_name' => 'First Name',
+            'full_name' => 'Full Name',
             'email' => 'Email',
             'facebook_id' => 'Facebook ID',
             'password' => 'Password',

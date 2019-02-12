@@ -29,7 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value'=> function ($model, $key, $index, $grid) {
                     $url = Url::to(['customers/view', 'id' => $model->customer_id]);
-                    return Html::a($model->customer_id, $url);
+                    return Html::a($model->customer_id, $url, [     
+                        'data-pjax' => '0'
+                    ]);
                 }
             ],
             [
@@ -37,7 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value'=> function ($model, $key, $index, $grid) {
                     $url = Url::to(['customers/view', 'id' => $model->customer_id]);
-                    return Html::a($model->customer->full_name, $url);
+                    return Html::a($model->customer->full_name, $url, [     
+                        'data-pjax' => '0'
+                    ]);
                 }
             ],
             [
@@ -45,7 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value'=> function ($model, $key, $index, $grid) {
                     $url = Url::to(['vault/view', 'id' => $model->vault_id]);
-                    return Html::a($model->vault_id, $url);
+                    return Html::a($model->vault_id, $url, [     
+                        'data-pjax' => '0'
+                    ]);
                 }
             ],
             [
@@ -53,7 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value'=> function ($model, $key, $index, $grid) {
                     $url = Url::to(['payment/view', 'id' => $model->payment_id]);
-                    return Html::a($model->payment_id, $url);
+                    return Html::a($model->payment_id, $url, [     
+                        'data-pjax' => '0'
+                    ]);
                 }
             ],
             [
@@ -61,7 +69,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value'=> function ($model, $key, $index, $grid) {
                     $url = Url::to(['address/view', 'id' => $model->address_id]);
-                    return Html::a($model->address_id, $url);
+                    return Html::a($model->address_id, $url, [     
+                        'data-pjax' => '0'
+                    ]);
                 }
             ],
             'status',
