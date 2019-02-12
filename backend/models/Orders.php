@@ -80,6 +80,7 @@ class Orders extends \yii\db\ActiveRecord
             'same_day_pickup' => 'Same Day Pickup',
             'next_day_drop' => 'Next Day Drop',
             'comments' => 'Comments',
+            'is_completed' => 'Is Completed'
         ];
     }
 
@@ -110,6 +111,9 @@ class Orders extends \yii\db\ActiveRecord
             'items'=>function($model){
                 return $model->items;
             },
+            'payments'=>function($model){
+                return $model->payments;
+            },
         ];
     }
 
@@ -136,5 +140,10 @@ class Orders extends \yii\db\ActiveRecord
     public function getItems()
     {
         return $this->hasMany(OrderItems::className(), ['order_id' => 'id']);
+    }
+
+    public function getPayments()
+    {
+        return $this->hasOne(Payments::className(), ['id' => 'payment_id']);
     }
 }

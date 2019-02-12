@@ -80,6 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'same_day_pickup',
             'next_day_drop',
             'comments',
+            'is_completed',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view} {update} {delete} {viewTasks}',  // the default buttons + your custom button

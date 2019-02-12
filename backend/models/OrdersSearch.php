@@ -18,7 +18,7 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'payment_id', 'status', 'pickup_at_door', 'pickup_time_from', 'pickup_time_to', 'pickup_type', 'drop_at_door', 'drop_time_from', 'drop_time_to', 'drop_type', 'address_id', 'same_day_pickup', 'next_day_drop'], 'integer'],
+            [['id', 'customer_id', 'payment_id', 'status', 'pickup_at_door', 'pickup_time_from', 'pickup_time_to', 'pickup_type', 'drop_at_door', 'drop_time_from', 'drop_time_to', 'drop_type', 'address_id', 'same_day_pickup', 'next_day_drop', 'is_completed'], 'integer'],
             [['pickup_date', 'drop_date', 'comments'], 'safe'],
             [['pickup_price', 'drop_price'], 'number'],
         ];
@@ -79,6 +79,7 @@ class OrdersSearch extends Orders
             'address_id' => $this->address_id,
             'same_day_pickup' => $this->same_day_pickup,
             'next_day_drop' => $this->next_day_drop,
+            'is_completed'  => $this->is_completed,
         ]);
         $query->joinWith(['customer']);
         $query->andFilterWhere(['like', 'customer.name', $this->customer_id]);

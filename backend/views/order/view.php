@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'same_day_pickup',
             'next_day_drop',
             'comments',
+            'is_completed'
         ],
     ]) ?>
 
@@ -108,5 +109,74 @@ $this->params['breadcrumbs'][] = $this->title;
 ]); ?>
 <?php Pjax::end(); ?>
 </div>
+<?php if(isset($model->vault) && !empty($model->vault)): ?>
+<div class="vault-index">
+    <h1>Vault Details</h1>
 
+    <?=  DetailView::widget([
+            'model' => $model->vault,
+            'attributes' => [
+                'id',
+                'customer_id',
+                'name',
+                'number',
+                'transact',
+                'payment_type',
+                'expiry_date',
+                'expiry_month',
+                'expiry_year',
+            ],
+        ]) ;
+    ?>
+</div>
+<?php endif; ?>
+
+<?php if(isset($model->address) && !empty($model->address)): ?>
+<div class="address-index">
+<h1>Address Details</h1>
+
+    <?=
+        DetailView::widget([
+            'model' => $model->address,
+            'attributes' => [
+               'id',
+                'customer_id',
+                'city_id',
+                'street_name',
+                'pobox',
+                'floor',
+                'unit_number',
+                'as_default',
+            ],
+        ]);
+        ?>
+</div>
+
+<?php endif; ?>
+</div>
+
+
+
+<?php if(isset($model->payments) && !empty($model->payments)): ?>
+<div class="address-index">
+<h1>Payment Details</h1>
+
+    <?=
+        DetailView::widget([
+            'model' => $model->payments,
+            'attributes' => [
+                'id',
+                'customer_id',
+                'vault_id',
+                'transaction_id',
+                'amount',
+                'description:ntext',
+                'status',
+                'created_at',
+            ],
+        ]);
+        ?>
+</div>
+
+<?php endif; ?>
 </div>
