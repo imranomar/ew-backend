@@ -24,9 +24,46 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'customer_id',
-            'vault_id',
-            'payment_id',
+            [
+                'header' => 'Customer ID',
+                'format' => 'raw',
+                'value'=> function ($model, $key, $index, $grid) {
+                    $url = Url::to(['customers/view', 'id' => $model->customer_id]);
+                    return Html::a($model->customer_id, $url);
+                }
+            ],
+            [
+                'header' => 'Full Name',
+                'format' => 'raw',
+                'value'=> function ($model, $key, $index, $grid) {
+                    $url = Url::to(['customers/view', 'id' => $model->customer_id]);
+                    return Html::a($model->customer->full_name, $url);
+                }
+            ],
+            [
+                'header' => 'Vault ID',
+                'format' => 'raw',
+                'value'=> function ($model, $key, $index, $grid) {
+                    $url = Url::to(['vault/view', 'id' => $model->vault_id]);
+                    return Html::a($model->vault_id, $url);
+                }
+            ],
+            [
+                'header' => 'Payment ID',
+                'format' => 'raw',
+                'value'=> function ($model, $key, $index, $grid) {
+                    $url = Url::to(['payment/view', 'id' => $model->payment_id]);
+                    return Html::a($model->payment_id, $url);
+                }
+            ],
+            [
+                'header' => 'Address ID',
+                'format' => 'raw',
+                'value'=> function ($model, $key, $index, $grid) {
+                    $url = Url::to(['address/view', 'id' => $model->address_id]);
+                    return Html::a($model->address_id, $url);
+                }
+            ],
             'status',
             'pickup_date',
             'pickup_at_door',
@@ -40,7 +77,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'drop_time_to',
             'drop_type',
             'drop_price',
-            'address_id',
             'same_day_pickup',
             'next_day_drop',
             'comments',

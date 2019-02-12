@@ -80,7 +80,8 @@ class OrdersSearch extends Orders
             'same_day_pickup' => $this->same_day_pickup,
             'next_day_drop' => $this->next_day_drop,
         ]);
-
+        $query->joinWith(['customer']);
+        $query->andFilterWhere(['like', 'customer.name', $this->customer_id]);
         $query->andFilterWhere(['like', 'comments', $this->comments]);
 
         return $dataProvider;
