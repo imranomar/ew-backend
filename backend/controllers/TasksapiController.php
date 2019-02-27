@@ -19,8 +19,9 @@ class TasksapiController extends ActiveController
 
     public function actionTest()
     {
-        echo 123;
+        echo 123;die;
     }
+
 
     public function actions() {
         $actions = parent::actions();
@@ -101,4 +102,19 @@ class TasksapiController extends ActiveController
     }
 
 
+    
+    public function actionGettodaytasks() {
+        $query = Tasks::find()
+        ->select('tasks.id, tasks.type, orders.id, orders.pickup_date, orders.drop_date, addresses.id, addresses.floor, addresses.street_name, cities.title as city')
+        ->from('tasks')
+        ->join('INNER JOIN', 'orders', 'orders.id = tasks.order_id')
+        ->join('LEFT OUTER JOIN', 'addresses', 'addresses.id = orders.address_id')
+        ->join('LEFT OUTER JOIN', 'cities', 'cities.id = addresses.city_id')
+        ->Where(['tasks.type' => 1, 'orders.pickup_date' => date('Y-m-d')])
+        ->orWhere(['tasks.type' => 2, 'orders.drop_date' => date('Y-m-d')])
+        ->andWhere(['tasks.status'=> 0]);
+
+
+        return $query->asArray()->all();
+    }
 }
